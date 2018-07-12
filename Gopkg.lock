@@ -8,12 +8,6 @@
   version = "v1.1.0"
 
 [[projects]]
-  name = "github.com/lalamove-go/logs"
-  packages = ["."]
-  revision = "2327aea6a3fc22df5e4c828c19fc9909f2c846f2"
-  version = "0.1.2"
-
-[[projects]]
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
@@ -53,6 +47,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "22e8bccd9557778237d3bcf3a1d0a83b147fe2cf8061567c98a6e4a105a377ba"
+  inputs-digest = "2b406eb2e14505211a47d25b99fe681735362c4c305d135a96eaf3edb0c988e8"
   solver-name = "gps-cdcl"
   solver-version = 1
