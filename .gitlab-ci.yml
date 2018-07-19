@@ -17,7 +17,7 @@ pages:
     - echo $CI_PROJECT_DIR
     - pwd
     - go get -u github.com/golang/dep/cmd/dep golang.org/x/tools/cmd/godoc
-    - dep ensure -v -vendor-only
+    - dep init -v
     - go test -short ./... -covermode=count -coverprofile=coverage.out
     - mkdir public
     - go fmt ./...
