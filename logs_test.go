@@ -8,13 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 )
 
 func TestGetLalamoveLoggerPassDebug(t *testing.T) {
 	temp, err := ioutil.TempFile(".", "zap-prod-config-test")
-	assert.Nil(t, err, "Failed to create temp file.")
+	require.Nil(t, err, "Failed to create temp file.")
 	defer os.Remove(temp.Name())
 
 	Config = NewConfig()
@@ -25,26 +25,26 @@ func TestGetLalamoveLoggerPassDebug(t *testing.T) {
 	const msg = "I am a message"
 
 	Log, err = Config.Build()
-	assert.Nil(t, err, "Failed to create logger")
+	require.Nil(t, err, "Failed to create logger")
 	Logger().Debug(msg)
 	byteContents, err := ioutil.ReadAll(temp)
 	defer Logger().Sync()
 
 	var tmpJSON map[string]interface{}
 	err = json.Unmarshal(byteContents, &tmpJSON)
-	assert.Nil(t, err, "Failed to unmarshal json")
-	assert.Equal(t, "debug", tmpJSON["level"])
-	assert.Equal(t, msg, tmpJSON["message"])
-	assert.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
+	require.Nil(t, err, "Failed to unmarshal json")
+	require.Equal(t, "debug", tmpJSON["level"])
+	require.Equal(t, msg, tmpJSON["message"])
+	require.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
 	_, err = strconv.Atoi(tmpJSON["src_line"].(string))
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = time.Parse(ISO8601, tmpJSON["time"].(string))
-	assert.Nil(t, err, "Invalid time format")
+	require.Nil(t, err, "Invalid time format")
 }
 
 func TestGetLalamoveLoggerPassDebugWithExtraFields(t *testing.T) {
 	temp, err := ioutil.TempFile(".", "zap-prod-config-test")
-	assert.Nil(t, err, "Failed to create temp file.")
+	require.Nil(t, err, "Failed to create temp file.")
 	defer os.Remove(temp.Name())
 
 	Config = NewConfig()
@@ -55,27 +55,27 @@ func TestGetLalamoveLoggerPassDebugWithExtraFields(t *testing.T) {
 	const msg = "I am a message"
 
 	Log, err = Config.Build()
-	assert.Nil(t, err, "Failed to create logger")
+	require.Nil(t, err, "Failed to create logger")
 	Logger().Debug(msg, zap.String("key1", "extra field"))
 	byteContents, err := ioutil.ReadAll(temp)
 	defer Logger().Sync()
 
 	var tmpJSON map[string]interface{}
 	err = json.Unmarshal(byteContents, &tmpJSON)
-	assert.Nil(t, err, "Failed to unmarshal json")
-	assert.Equal(t, "debug", tmpJSON["level"])
-	assert.Equal(t, "extra field", tmpJSON["context"].(map[string]interface{})["key1"])
-	assert.Equal(t, msg, tmpJSON["message"])
-	assert.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
+	require.Nil(t, err, "Failed to unmarshal json")
+	require.Equal(t, "debug", tmpJSON["level"])
+	require.Equal(t, "extra field", tmpJSON["context"].(map[string]interface{})["key1"])
+	require.Equal(t, msg, tmpJSON["message"])
+	require.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
 	_, err = strconv.Atoi(tmpJSON["src_line"].(string))
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = time.Parse(ISO8601, tmpJSON["time"].(string))
-	assert.Nil(t, err, "Invalid time format")
+	require.Nil(t, err, "Invalid time format")
 }
 
 func TestGetLalamoveLoggerPassInfo(t *testing.T) {
 	temp, err := ioutil.TempFile(".", "zap-prod-config-test")
-	assert.Nil(t, err, "Failed to create temp file.")
+	require.Nil(t, err, "Failed to create temp file.")
 	defer os.Remove(temp.Name())
 
 	Config = NewConfig()
@@ -86,26 +86,26 @@ func TestGetLalamoveLoggerPassInfo(t *testing.T) {
 	const msg = "I am a message"
 
 	Log, err = Config.Build()
-	assert.Nil(t, err, "Failed to create logger")
+	require.Nil(t, err, "Failed to create logger")
 	Logger().Info(msg)
 	byteContents, err := ioutil.ReadAll(temp)
 	defer Logger().Sync()
 
 	var tmpJSON map[string]interface{}
 	err = json.Unmarshal(byteContents, &tmpJSON)
-	assert.Nil(t, err, "Failed to unmarshal json")
-	assert.Equal(t, "info", tmpJSON["level"])
-	assert.Equal(t, msg, tmpJSON["message"])
-	assert.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
+	require.Nil(t, err, "Failed to unmarshal json")
+	require.Equal(t, "info", tmpJSON["level"])
+	require.Equal(t, msg, tmpJSON["message"])
+	require.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
 	_, err = strconv.Atoi(tmpJSON["src_line"].(string))
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = time.Parse(ISO8601, tmpJSON["time"].(string))
-	assert.Nil(t, err, "Invalid time format")
+	require.Nil(t, err, "Invalid time format")
 }
 
 func TestGetLalamoveLoggerPassWarn(t *testing.T) {
 	temp, err := ioutil.TempFile(".", "zap-prod-config-test")
-	assert.Nil(t, err, "Failed to create temp file.")
+	require.Nil(t, err, "Failed to create temp file.")
 	defer os.Remove(temp.Name())
 
 	Config = NewConfig()
@@ -116,26 +116,26 @@ func TestGetLalamoveLoggerPassWarn(t *testing.T) {
 	const msg = "I am a message"
 
 	Log, err = Config.Build()
-	assert.Nil(t, err, "Failed to create logger")
+	require.Nil(t, err, "Failed to create logger")
 	Logger().Warn(msg)
 	byteContents, err := ioutil.ReadAll(temp)
 	defer Logger().Sync()
 
 	var tmpJSON map[string]interface{}
 	err = json.Unmarshal(byteContents, &tmpJSON)
-	assert.Nil(t, err, "Failed to unmarshal json")
-	assert.Equal(t, Warning, tmpJSON["level"])
-	assert.Equal(t, msg, tmpJSON["message"])
-	assert.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
+	require.Nil(t, err, "Failed to unmarshal json")
+	require.Equal(t, Warning, tmpJSON["level"])
+	require.Equal(t, msg, tmpJSON["message"])
+	require.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
 	_, err = strconv.Atoi(tmpJSON["src_line"].(string))
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = time.Parse(ISO8601, tmpJSON["time"].(string))
-	assert.Nil(t, err, "Invalid time format")
+	require.Nil(t, err, "Invalid time format")
 }
 
 func TestGetLalamoveLoggerPassError(t *testing.T) {
 	temp, err := ioutil.TempFile(".", "zap-prod-config-test")
-	assert.Nil(t, err, "Failed to create temp file.")
+	require.Nil(t, err, "Failed to create temp file.")
 	defer os.Remove(temp.Name())
 
 	Config = NewConfig()
@@ -146,22 +146,22 @@ func TestGetLalamoveLoggerPassError(t *testing.T) {
 	const msg = "I am a message"
 
 	Log, err = Config.Build()
-	assert.Nil(t, err, "Failed to create logger")
+	require.Nil(t, err, "Failed to create logger")
 	Logger().Error(msg)
 	byteContents, err := ioutil.ReadAll(temp)
 	defer Logger().Sync()
 
 	var tmpJSON map[string]interface{}
 	err = json.Unmarshal(byteContents, &tmpJSON)
-	assert.Nil(t, err, "Failed to unmarshal json")
-	assert.Equal(t, "error", tmpJSON["level"])
-	assert.Equal(t, msg, tmpJSON["message"])
-	assert.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
-	assert.Contains(t, tmpJSON["backtrace"], "logs/logs_test.go")
+	require.Nil(t, err, "Failed to unmarshal json")
+	require.Equal(t, "error", tmpJSON["level"])
+	require.Equal(t, msg, tmpJSON["message"])
+	require.Contains(t, tmpJSON["src_file"], "logs/logs_test.go")
+	require.Contains(t, tmpJSON["backtrace"], "logs/logs_test.go")
 	_, err = strconv.Atoi(tmpJSON["src_line"].(string))
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = time.Parse(ISO8601, tmpJSON["time"].(string))
-	assert.Nil(t, err, "Invalid time format")
+	require.Nil(t, err, "Invalid time format")
 }
 
 func TestGetLalamoveLoggerPassLogging(t *testing.T) {
@@ -174,7 +174,7 @@ func TestGetLalamoveLoggerPassLogging(t *testing.T) {
 	// By default, loggers are unbuffered. However, since zap's low-level APIs allow buffering,
 	// calling Sync before letting your process exit is a good habit.
 	defer Logger().Sync()
-	assert.True(t, true)
+	require.True(t, true)
 }
 
 // TestGetLalamoveLoggerPassErrorWithRootLevelNamespace will test the extra fields.
@@ -195,5 +195,5 @@ func TestGetLalamoveLoggerPassErrorWithRootLevelNamespace(t *testing.T) {
 	Logger().Error("I am a Debug", zap.String("f0", "I go to school by bus"), zap.String("f1", "Goodest english"))
 	Logger().Error("I am a Debug", zap.String("f2", "I go to school by MTR"), zap.String("f3", "Goodest cantonese"))
 	defer Logger().Sync()
-	assert.True(t, true)
+	require.True(t, true)
 }

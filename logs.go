@@ -80,10 +80,10 @@ func InitLogger() {
 
 // NewConfig will return a zap config
 func NewConfig() *zap.Config {
-	once.Do(func() {
+	if nil == Config {
 		c := zap.NewProductionConfig()
 		Config = &c
-	})
+	}
 	return Config
 }
 
